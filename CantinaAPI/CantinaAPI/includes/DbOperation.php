@@ -29,26 +29,7 @@ class DbOperation
 		
 	}
 
-	function selectProdutos($id){
-		$stmt = $this->con->prepare("SELECT IDProduto, NomeProduto, PrecoProduto, QtdeEstoque, Descricao FROM Produtos WHERE IDProduto = $id");
-		$stmt->execute();
-		$stmt->bind_result($id, $NomeProduto, $PrecoProduto, $QtdeEstoque, $Descricao);
-		
-		$produtos = array(); 
-		
-		while($stmt->fetch()){
-			$produto  = array();
-			$produto['IDProduto'] = $id; 
-			$produto['NomeProduto'] = $NomeProduto; 
-			$produto['PrecoProduto'] = $PrecoProduto; 
-			$produto['QtdeEstoque'] = $QtdeEstoque; 
-			$produto['Descricao'] = $Descricao; 
-			
-			array_push($produtos, $produto); 
-			
-	}
-	return $produtos; 
-}
+	
 
 		
 	function getProdutos(){

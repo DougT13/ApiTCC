@@ -70,7 +70,7 @@
 				
 					$response['message'] = 'Algum erro ocorreu por favor tente novamente';
 				}
-				header('location: http://localhost/tcc_cantina/formulario.php');
+				header('location: http://localhost/siteTCC/formulario.php');
 				
 				
 			break; 
@@ -82,18 +82,9 @@
 				$response['error'] = false; 
 				$response['message'] = 'Pedido concluído com sucesso';
 				$response['produtos'] = $db->getProdutos();
+
 			break;
 
-			case 'selectProdutos':
-				$id = $_GET['IDProduto'];
-				$db = new DbOperation();
-				$response['error'] = false; 
-				$response['message'] = 'Pedido concluído com sucesso';
-				$response['produtos'] = $db->selectProdutos($id);
-			break; 
-			
-			
-		
 			case 'updateProdutos':
 				isTheseParametersAvailable(array('IDProduto','NomeProduto','PrecoProduto','QtdeEstoque','Descricao'));
 				$db = new DbOperation();
@@ -113,6 +104,7 @@
 					$response['error'] = true; 
 					$response['message'] = 'Algum erro ocorreu por favor tente novamente';
 				}
+				header('location: http://localhost/siteTCC/Gerenciamento.php');
 			break; 
 			
 			
