@@ -70,20 +70,62 @@
 				
 					$response['message'] = 'Algum erro ocorreu por favor tente novamente';
 				}
-				header('location: http://localhost/siteTCC/formulario.php');
+				header('location: http://localhost/siteTCC/Gerenciamento.php');
 				
 				
 			break; 
 			
 		
 			case 'getProdutos':
+					$db = new DbOperation();
+					$response['error'] = false; 
+					$response['message'] = 'Pedido concluído com sucesso';
+					$response['produtos'] = $db->getProdutos();
 				
+				//header('location: http://localhost/siteTCC/Gerenciamento.php');
+			break;
+
+			case 'selectProdutos':
+				$id = $_POST['IDProduto'];
 				$db = new DbOperation();
 				$response['error'] = false; 
 				$response['message'] = 'Pedido concluído com sucesso';
-				$response['produtos'] = $db->getProdutos();
+				$response['produtos'] = $db->selectProdutos($id);
+			break; 
 
-			break;
+			case 'createPedido':
+				$db = new DbOperation();
+				isTheseParametersAvailable(array('IDCliente','DataPedido','ValorPedido'));
+				
+				$result = $db->createPedido(
+					$_POST['IDCliente'],
+					$_POST['DataPedido'],
+					$_POST['ValorPedido']
+				);
+				
+
+			
+				if($result){
+					
+					$response['error'] = false; 
+
+					
+					$response['message'] = 'Pedido realizado com sucesso';
+
+					
+					$response['pedidos'] = $db->getPedidos();
+
+				}else{
+
+					
+					$response['error'] = true; 
+
+				
+					$response['message'] = 'Algum erro ocorreu por favor tente novamente';
+				}
+				
+				
+			break; 
 
 			case 'updateProdutos':
 				isTheseParametersAvailable(array('IDProduto','NomeProduto','PrecoProduto','QtdeEstoque','Descricao'));
@@ -111,12 +153,13 @@
 			case 'deleteProdutos':
 
 				
-				if(isset($_GET['id'])){
+				if(isset($_POST['IDProduto'])){
 					$db = new DbOperation();
-					if($db->deleteProdutos($_GET['IDProduto'])){
+					if($db->deleteProdutos($_POST['IDProduto'])){
 						$response['error'] = false; 
 						$response['message'] = 'Produto excluído com sucesso';
 						$response['produtos'] = $db->getProdutos();
+						header('location: http://localhost/siteTCC/Gerenciamento.php');
 					}else{
 						$response['error'] = true; 
 						$response['message'] = 'Algum erro ocorreu por favor tente novamente';
@@ -125,7 +168,55 @@
 					$response['error'] = true; 
 					$response['message'] = 'Não foi possível deletar, forneça um id por favor';
 				}
+				
 			break; 
+
+
+			case 'getItensPedidos':
+				$db = new DbOperation();
+				$response['error'] = false; 
+				$response['message'] = 'Pedido concluído com sucesso';
+				$response['pedidos'] = $db->getItensPedidos();
+			break;
+			case 'getPedidos':
+				$db = new DbOperation();
+				$response['error'] = false; 
+				$response['message'] = 'Pedido concluído com sucesso';
+				$response['pedidos'] = $db->getPedidos();
+			break;
+
+			case 'cadastraItensPedidos':
+                $db = new DbOperation();
+                isTheseParametersAvailable(array('IDPedido','IDProduto','QuantidadeVendida'));
+
+                $result = $db->cadastraItensPedidos(
+                    $_POST['IDPedido'],
+                    $_POST['IDProduto'],
+                    $_POST['QuantidadeVendida']
+                );
+
+
+                if($result){
+
+                    $response['error'] = false; 
+
+
+                    $response['message'] = 'Pedido realizado com sucesso';
+
+
+                    //$response['pedidos'] = $db->();
+
+                }else{
+
+
+                    $response['error'] = true; 
+
+
+                    $response['message'] = 'Algum erro ocorreu, por favor tente novamente';
+                }
+
+
+            break;
 		}
 		
 	}else{
